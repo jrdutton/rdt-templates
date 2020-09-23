@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
   "editor.renderWhitespace": "none",
+  "html.format.wrapAttributes": "auto",
   "html.format.wrapLineLength": 0
 }

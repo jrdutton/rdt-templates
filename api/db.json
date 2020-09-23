@@ -1,0 +1,42 @@
+{
+  "templates": [
+    {
+      "id": 1,
+      "templateName": "T N 1",
+      "entityTypeName": "Claim",
+      "modelName": "Claim",
+      "modelVersion": 1,
+      "templateChannels": [
+        {
+          "channelName": "Email",
+          "body": "Test1"
+        }
+      ]
+    }
+    {
+      "id": 2,
+      "templateName": "T N 2",
+      "entityTypeName": "Claim",
+      "modelName": "Claim",
+      "modelVersion": 1,
+      "templateChannels": [
+        {
+          "channelName": "Email",
+          "body": "Test1"
+        }
+      ]
+    }
+  ],
+  "templateSummaries": [
+    {
+      "id": 1,
+      "templateName": "T N 1",
+      "entityTypeName": "Claim"
+    },
+    {
+      "id": 2,
+      "templateName": "T N 2",
+      "entityTypeName": "Claim"
+    }
+  ]
+}

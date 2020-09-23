@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <div class="row flex-xl-nowrap">
+    <div class="col-md-3 col-xl-2 bd-sidebar">
+      <rdt-template-list [templates]="templates$ | async"></rdt-template-list>
+    </div>
+    <div class="col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

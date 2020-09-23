@@ -1,0 +1,5 @@
+{
+  "/api/*": "/$1",
+  "/templates/:id": "/templates/:id",
+  "/templates": "/templateSummaries"
+}
