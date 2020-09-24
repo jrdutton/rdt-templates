@@ -1,7 +1,7 @@
-<h1>{{template?.templateName}}</h1>
 <form novalidate autocomplete="off" [formGroup]="fg" (ngSubmit)="onSubmit()">
   <div class="row">
     <div class="col">
+      <input autocomplete="off" class="form-control" formControlName="templateName" />
     </div>
   </div>
   <div class="row">

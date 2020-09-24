@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, flatMap, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
   ITemplateDto,
   ITemplateSummaryDto,
@@ -15,20 +15,28 @@ export class DataService {
   private baseUrl = '';
   private templateBaseUrl = this.baseUrl + '/api/templates';
 
-  constructor(private http: HttpClient) {}
+  private refreshSubject = new BehaviorSubject<boolean>(true);
+  refreshAction$ = this.refreshSubject.asObservable();
 
-  getTemplates(): Observable<ITemplateSummaryDto[]> {
-    return this.http.get<ITemplateWithIdDto[]>(this.templateBaseUrl).pipe(
-      map((ts) =>
-        ts.map<ITemplateSummaryDto>((t) => ({
-          id: t.id,
-          templateName: t.templateName,
-          entityTypeName: t.entityTypeName,
-        }))
-      ),
-      catchError(this.handleError)
-    );
-  }
+  templates$ = this.refreshAction$.pipe(
+    switchMap(() =>
+      this.http.get<ITemplateWithIdDto[]>(this.templateBaseUrl).pipe(
+        map((ts) =>
+          ts.map(
+            (t) =>
+              ({
+                id: t.id,
+                templateName: t.templateName,
+                entityTypeName: t.entityTypeName,
+              } as ITemplateSummaryDto)
+          )
+        ),
+        catchError(this.handleError)
+      )
+    )
+  );
+
+  constructor(private http: HttpClient) {}
 
   getTemplate(id: number): Observable<ITemplateWithIdDto> {
     return this.http
@@ -39,19 +47,24 @@ export class DataService {
   addTemplate(template: ITemplateDto): Observable<ITemplateWithIdDto> {
     return this.http
       .post<ITemplateWithIdDto>(this.templateBaseUrl, template)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        tap(() => this.refreshSubject.next(true)),
+        catchError(this.handleError)
+      );
   }
 
   updateTemplate(id: number, template: ITemplateDto): Observable<void> {
-    return this.http
-      .put<void>(this.templateBaseUrl + '/' + id, template)
-      .pipe(catchError(this.handleError));
+    return this.http.put<void>(this.templateBaseUrl + '/' + id, template).pipe(
+      tap(() => this.refreshSubject.next(true)),
+      catchError(this.handleError)
+    );
   }
 
   deleteTemplate(id: number): Observable<void> {
-    return this.http
-      .delete<void>(this.templateBaseUrl + '/' + id)
-      .pipe(catchError(this.handleError));
+    return this.http.delete<void>(this.templateBaseUrl + '/' + id).pipe(
+      tap(() => this.refreshSubject.next(true)),
+      catchError(this.handleError)
+    );
   }
 
   // tslint:disable-next-line: no-any

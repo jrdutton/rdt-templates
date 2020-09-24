@@ -12,7 +12,7 @@ export class TemplatesComponent implements OnInit {
   public templates$: Observable<ITemplateSummaryDto[]>;
 
   constructor(private dataService: DataService) {
-    this.templates$ = this.dataService.getTemplates();
+    this.templates$ = this.dataService.templates$;
   }
 
   ngOnInit(): void {}

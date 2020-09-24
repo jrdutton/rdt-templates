@@ -33,9 +33,9 @@ export class TemplateAddEditComponent implements OnInit {
     if (template?.id) {
       this.dataService.updateTemplate(template.id, template).subscribe();
     } else if (template) {
-      this.dataService
-        .addTemplate(template)
-        .subscribe((t) => this.router.navigate(['/templates', t.id]));
+      this.dataService.addTemplate(template).subscribe((t) => {
+        this.router.navigate(['/templates', t.id]);
+      });
     }
   }
 
