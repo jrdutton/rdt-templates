@@ -30,7 +30,13 @@ export class TemplateAddEditComponent implements OnInit {
   }
 
   onSubmit(template: ITemplateWithIdDto): void {
-    this.dataService.updateTemplate(template.id, template).subscribe();
+    if (template?.id) {
+      this.dataService.updateTemplate(template.id, template).subscribe();
+    } else if (template) {
+      this.dataService
+        .addTemplate(template)
+        .subscribe((t) => this.router.navigate(['/templates', t.id]));
+    }
   }
 
   onDelete(id: number): void {

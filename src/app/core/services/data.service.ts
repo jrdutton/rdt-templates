@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, flatMap, map } from 'rxjs/operators';
 import {
   ITemplateDto,
   ITemplateSummaryDto,
@@ -18,9 +18,16 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   getTemplates(): Observable<ITemplateSummaryDto[]> {
-    return this.http
-      .get<ITemplateSummaryDto[]>(this.templateBaseUrl)
-      .pipe(catchError(this.handleError));
+    return this.http.get<ITemplateWithIdDto[]>(this.templateBaseUrl).pipe(
+      map((ts) =>
+        ts.map<ITemplateSummaryDto>((t) => ({
+          id: t.id,
+          templateName: t.templateName,
+          entityTypeName: t.entityTypeName,
+        }))
+      ),
+      catchError(this.handleError)
+    );
   }
 
   getTemplate(id: number): Observable<ITemplateWithIdDto> {

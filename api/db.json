@@ -26,17 +26,5 @@
         }
       ]
     }
-  ],
-  "templateSummaries": [
-    {
-      "id": 1,
-      "templateName": "T N 1",
-      "entityTypeName": "Claim"
-    },
-    {
-      "id": 2,
-      "templateName": "T N 2",
-      "entityTypeName": "Claim"
-    }
   ]
 }
