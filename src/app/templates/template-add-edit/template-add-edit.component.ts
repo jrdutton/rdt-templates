@@ -10,6 +10,7 @@ import { DataService } from '../../core/services';
   styleUrls: ['./template-add-edit.component.scss'],
 })
 export class TemplateAddEditComponent implements OnInit {
+  isLoading$!: Observable<boolean>;
   template$!: Observable<ITemplateWithIdDto>;
 
   constructor(
@@ -19,12 +20,14 @@ export class TemplateAddEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading$ = this.dataService.isLoadingAction$;
+    this.template$ = this.dataService.template$;
     this.route.params.subscribe((params: Params) => {
       if (params.id !== undefined) {
         const id = +params.id;
-        this.template$ = this.dataService.getTemplate(id);
+        this.dataService.selectTemplate(id);
       } else {
-        this.template$ = of({} as ITemplateWithIdDto);
+        this.dataService.selectTemplate(0);
       }
     });
   }

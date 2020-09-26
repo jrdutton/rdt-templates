@@ -1,7 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  concat,
+  Observable,
+  of,
+  scheduled,
+  throwError,
+} from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  finalize,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import {
   ITemplateDto,
   ITemplateSummaryDto,
@@ -15,10 +31,17 @@ export class DataService {
   private baseUrl = '';
   private templateBaseUrl = this.baseUrl + '/api/templates';
 
+  private selectedTemplateSubject = new BehaviorSubject<number>(0);
+  selectedTemplateAction$ = this.selectedTemplateSubject.asObservable();
+
+  private isLoadingSubject = new BehaviorSubject<boolean>(false);
+  isLoadingAction$ = this.isLoadingSubject.asObservable();
+
   private refreshSubject = new BehaviorSubject<boolean>(true);
   refreshAction$ = this.refreshSubject.asObservable();
 
   templates$ = this.refreshAction$.pipe(
+    debounceTime(200),
     switchMap(() =>
       this.http.get<ITemplateWithIdDto[]>(this.templateBaseUrl).pipe(
         map((ts) =>
@@ -36,12 +59,24 @@ export class DataService {
     )
   );
 
+  template$ = this.selectedTemplateAction$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    tap(() => this.isLoadingSubject.next(true)),
+    switchMap((id) =>
+      id === 0
+        ? of({} as ITemplateWithIdDto)
+        : this.http
+            .get<ITemplateWithIdDto>(this.templateBaseUrl + '/' + id)
+            .pipe(catchError(this.handleError))
+    ),
+    finalize(() => this.isLoadingSubject.next(false))
+  );
+
   constructor(private http: HttpClient) {}
 
-  getTemplate(id: number): Observable<ITemplateWithIdDto> {
-    return this.http
-      .get<ITemplateWithIdDto>(this.templateBaseUrl + '/' + id)
-      .pipe(catchError(this.handleError));
+  selectTemplate(id: number): void {
+    this.selectedTemplateSubject.next(id);
   }
 
   addTemplate(template: ITemplateDto): Observable<ITemplateWithIdDto> {

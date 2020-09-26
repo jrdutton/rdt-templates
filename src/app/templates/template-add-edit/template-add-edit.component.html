@@ -1,1 +1,8 @@
-<rdt-template-add-edit-form [template]="template$ | async" (submitEvent)="onSubmit($event)" (deleteEvent)="onDelete($event)"></rdt-template-add-edit-form>
+<ng-container *ngIf="isLoading$ | async; else loaded">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</ng-container>
+<ng-template #loaded>
+  <rdt-template-add-edit-form [template]="template$ | async" (submitEvent)="onSubmit($event)" (deleteEvent)="onDelete($event)"></rdt-template-add-edit-form>
+</ng-template>
