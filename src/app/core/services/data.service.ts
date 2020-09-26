@@ -19,6 +19,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import {
+  IObsWithStatusResult,
   ITemplateDto,
   ITemplateSummaryDto,
   ITemplateWithIdDto,
@@ -33,9 +34,6 @@ export class DataService {
 
   private selectedTemplateSubject = new BehaviorSubject<number>(0);
   selectedTemplateAction$ = this.selectedTemplateSubject.asObservable();
-
-  private isLoadingSubject = new BehaviorSubject<boolean>(false);
-  isLoadingAction$ = this.isLoadingSubject.asObservable();
 
   private refreshSubject = new BehaviorSubject<boolean>(true);
   refreshAction$ = this.refreshSubject.asObservable();
@@ -62,15 +60,40 @@ export class DataService {
   template$ = this.selectedTemplateAction$.pipe(
     debounceTime(200),
     distinctUntilChanged(),
-    tap(() => this.isLoadingSubject.next(true)),
     switchMap((id) =>
       id === 0
         ? of({} as ITemplateWithIdDto)
         : this.http
             .get<ITemplateWithIdDto>(this.templateBaseUrl + '/' + id)
             .pipe(catchError(this.handleError))
-    ),
-    finalize(() => this.isLoadingSubject.next(false))
+    )
+  );
+
+  templateWithStatus$: Observable<
+    IObsWithStatusResult<ITemplateWithIdDto>
+  > = this.selectedTemplateAction$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    switchMap((id) =>
+      concat(
+        of({ loading: true } as IObsWithStatusResult<ITemplateWithIdDto>),
+        id === 0
+          ? of({ loading: false, value: {} } as IObsWithStatusResult<
+              ITemplateWithIdDto
+            >)
+          : this.http
+              .get<ITemplateWithIdDto>(this.templateBaseUrl + '/' + id)
+              .pipe(
+                map(
+                  (value) =>
+                    ({ loading: false, value } as IObsWithStatusResult<
+                      ITemplateWithIdDto
+                    >)
+                ),
+                catchError(this.handleErrorWrapped)
+              )
+      )
+    )
   );
 
   constructor(private http: HttpClient) {}
@@ -102,7 +125,7 @@ export class DataService {
     );
   }
 
-  // tslint:disable-next-line: no-any
+  // tslint:disable: no-any
   private handleError(err: any): Observable<never> {
     let errorMessage: string;
     if (err.error instanceof ErrorEvent) {
@@ -113,4 +136,16 @@ export class DataService {
     console.error(err);
     return throwError(errorMessage);
   }
+
+  private handleErrorWrapped(err: any): Observable<IObsWithStatusResult<any>> {
+    let errorMessage: string;
+    if (err.error instanceof ErrorEvent) {
+      errorMessage = `An error occurred: ${err.error.message}`;
+    } else {
+      errorMessage = `Backend returned code ${err.status}: ${err.message}`;
+    }
+    console.error(err);
+    return of({ error: errorMessage } as IObsWithStatusResult<any>);
+  }
+  // tslint:enable: no-any
 }

@@ -1,15 +1,9 @@
 <form novalidate autocomplete="off" [formGroup]="fg" (ngSubmit)="onSubmit()">
-  <div class="row">
-    <div class="col">
-      <input autocomplete="off" class="form-control" formControlName="templateName" [attr.disabled]="readOnly ? true : null" />
-    </div>
+  <div class="form-group">
+    <input autocomplete="off" class="form-control" formControlName="templateName" [attr.disabled]="readOnly ? true : null" />
   </div>
-  <div class="row">
-    <div class="col">
-      <button *ngIf="!readOnly" type="submit" aria-label="Save" class="btn btn-primary">Save</button>
-      <button *ngIf="!readOnly && template?.id" type="button" aria-label="Cancel" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-      <button *ngIf="readOnly" type="button" aria-label="Edit" class="btn btn-primary" (click)="onEdit()">Edit</button>
-      <button *ngIf="readOnly" type="button" aria-label="Delete" class="btn btn-secondary" (click)="onDelete()">Delete</button>
-    </div>
-  </div>
+  <button *ngIf="!readOnly" type="submit" aria-label="Save" class="btn btn-primary mr-1">Save</button>
+  <button *ngIf="!readOnly && template?.id" type="button" aria-label="Cancel" class="btn btn-secondary mr-1" (click)="onCancel()">Cancel</button>
+  <button *ngIf="readOnly" type="button" aria-label="Edit" class="btn btn-primary mr-1" (click)="onEdit()">Edit</button>
+  <button *ngIf="readOnly" type="button" aria-label="Delete" class="btn btn-secondary mr-1" (click)="onDelete()">Delete</button>
 </form>

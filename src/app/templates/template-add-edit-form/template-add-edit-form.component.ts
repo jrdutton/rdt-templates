@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -7,7 +8,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormUtilsService } from 'src/app/core/services';
 import { ITemplateWithIdDto } from 'src/app/shared/interfaces';
 
@@ -15,6 +16,7 @@ import { ITemplateWithIdDto } from 'src/app/shared/interfaces';
   selector: 'rdt-template-add-edit-form',
   templateUrl: './template-add-edit-form.component.html',
   styleUrls: ['./template-add-edit-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TemplateAddEditFormComponent implements OnInit, OnChanges {
   @Input()
@@ -35,7 +37,7 @@ export class TemplateAddEditFormComponent implements OnInit, OnChanges {
     private formUtilsService: FormUtilsService
   ) {
     this.fg = this.fb.group({
-      templateName: this.fb.control(''),
+      templateName: this.fb.control('', Validators.required),
     });
   }
 
@@ -61,12 +63,15 @@ export class TemplateAddEditFormComponent implements OnInit, OnChanges {
   onSubmit(): void {
     this.formUtilsService.validate(this.fg);
     if (this.template && this.fg.valid) {
-      this.readOnly = true;
       const submit: ITemplateWithIdDto = {
         ...this.template,
         templateName: this.fg.get('templateName')?.value,
       };
       this.submitEvent.emit(submit);
+      const id = this.template?.id;
+      if (id) {
+        this.readOnly = true;
+      }
     }
   }
 

@@ -1,8 +1,15 @@
-<ng-container *ngIf="isLoading$ | async; else loaded">
-  <div class="spinner-border text-primary" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</ng-container>
-<ng-template #loaded>
-  <rdt-template-add-edit-form [template]="template$ | async" (submitEvent)="onSubmit($event)" (deleteEvent)="onDelete($event)"></rdt-template-add-edit-form>
-</ng-template>
+<div *ngIf="templateWithStatus$ | async as templateWithStatus">
+  <ng-template [ngIf]="templateWithStatus.value">
+    <rdt-template-add-edit-form [template]="templateWithStatus.value" (submitEvent)="onSubmit($event)" (deleteEvent)="onDelete($event)"></rdt-template-add-edit-form>
+  </ng-template>
+  <ng-template [ngIf]="templateWithStatus.loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="templateWithStatus.error">
+    <div class="alert alert-danger" role="alert">
+      {{templateWithStatus.error}}
+    </div>
+  </ng-template>
+</div>
