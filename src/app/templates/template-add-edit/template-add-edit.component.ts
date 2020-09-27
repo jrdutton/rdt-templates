@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   IObsWithStatusResult,
   ITemplateWithIdDto,
@@ -13,7 +13,6 @@ import { DataService } from '../../core/services';
   styleUrls: ['./template-add-edit.component.scss'],
 })
 export class TemplateAddEditComponent implements OnInit {
-  template$!: Observable<ITemplateWithIdDto>;
   templateWithStatus$!: Observable<IObsWithStatusResult<ITemplateWithIdDto>>;
 
   constructor(
@@ -23,7 +22,6 @@ export class TemplateAddEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.template$ = this.dataService.template$;
     this.templateWithStatus$ = this.dataService.templateWithStatus$;
     this.route.params.subscribe((params: Params) => {
       if (params.id !== undefined) {

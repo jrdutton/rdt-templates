@@ -8,6 +8,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./templates/templates.module').then((m) => m.TemplatesModule),
   },
+  {
+    path: 'templates-ngrx',
+    loadChildren: () =>
+      import('./templates-ngrx/templates-ngrx.module').then(
+        (m) => m.TemplatesNgrxModule
+      ),
+  },
   { path: '**', pathMatch: 'full', redirectTo: '/templates' },
 ];
 

@@ -131,7 +131,7 @@ export class DataService {
     if (err.error instanceof ErrorEvent) {
       errorMessage = `An error occurred: ${err.error.message}`;
     } else {
-      errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
+      errorMessage = `Backend returned code ${err.status}: ${err.message}`;
     }
     console.error(err);
     return throwError(errorMessage);

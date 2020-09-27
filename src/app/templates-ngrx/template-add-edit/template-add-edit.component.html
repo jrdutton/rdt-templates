@@ -1,0 +1,10 @@
+<ng-container *ngIf="loading$ | async else loaded">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</ng-container>
+<ng-template #loaded>
+  <ng-container *ngIf="template$ | async as template">
+    <rdt-template-add-edit-form [template]="template" (submitEvent)="onSubmit($event)" (deleteEvent)="onDelete($event)"></rdt-template-add-edit-form>
+  </ng-container>
+</ng-template>

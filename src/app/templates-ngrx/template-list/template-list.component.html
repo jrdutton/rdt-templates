@@ -1,0 +1,10 @@
+<nav class="toc">
+  <div class="toc-item" [class.active]="isActive(['/' + root.toLowerCase()])">
+    <a class="toc-link" [routerLink]="['/' + root.toLowerCase()]">New</a>
+    <ul class="nav flex-column">
+      <li *ngFor="let template of templates" [class.active]="isActive(['/' + root.toLowerCase(), template?.id])">
+        <a class="toc-link" [routerLink]="['/' + root.toLowerCase(), template?.id]">{{ template?.templateName }}</a>
+      </li>
+    </ul>
+  </div>
+</nav>
