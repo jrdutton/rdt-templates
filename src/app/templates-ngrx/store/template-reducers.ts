@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { ITemplateWithIdDto } from 'src/app/shared/interfaces';
+import { ITemplateWithIdDto } from '../../shared/interfaces';
 import * as Actions from './actions';
 
 export interface TemplateState {

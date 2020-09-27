@@ -9,8 +9,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormUtilsService } from 'src/app/core/services';
-import { ITemplateWithIdDto } from 'src/app/shared/interfaces';
+import { FormUtilsService } from '../../core/services';
+import { ITemplateWithIdDto } from '../../shared/interfaces';
 
 @Component({
   selector: 'rdt-template-add-edit-form',

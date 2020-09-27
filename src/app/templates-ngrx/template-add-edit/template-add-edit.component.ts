@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ITemplateWithIdDto } from 'src/app/shared/interfaces';
+import { ITemplateWithIdDto } from '../../shared/interfaces';
 import {
   addTemplate,
   deleteTemplate,

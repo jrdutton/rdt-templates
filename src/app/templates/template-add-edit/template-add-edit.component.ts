@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { DataService } from '../../core/services';
 import {
   IObsWithStatusResult,
   ITemplateWithIdDto,
-} from 'src/app/shared/interfaces';
-import { DataService } from '../../core/services';
+} from '../../shared/interfaces';
 
 @Component({
   selector: 'rdt-template-add-edit',
