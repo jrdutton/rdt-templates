@@ -1,19 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  concat,
-  Observable,
-  of,
-  scheduled,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, concat, Observable, of, throwError } from 'rxjs';
 import {
   catchError,
   debounceTime,
-  delay,
   distinctUntilChanged,
-  finalize,
   map,
   switchMap,
   tap,

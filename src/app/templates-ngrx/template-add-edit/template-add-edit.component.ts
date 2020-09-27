@@ -6,6 +6,7 @@ import { ITemplateWithIdDto } from 'src/app/shared/interfaces';
 import {
   addTemplate,
   deleteTemplate,
+  getEmptyTemplate,
   getTemplate,
   updateTemplate,
 } from '../store/actions';
@@ -40,8 +41,7 @@ export class TemplateAddEditComponent implements OnInit {
         const id = +params.id;
         this.store.dispatch(getTemplate({ id }));
       } else {
-        const id = 0;
-        this.store.dispatch(getTemplate({ id }));
+        this.store.dispatch(getEmptyTemplate());
       }
     });
   }

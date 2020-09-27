@@ -11,12 +11,13 @@ export const getTemplatesSuccess = createAction(
   props<{ templates: ITemplateSummaryDto[] }>()
 );
 export const getTemplatesFailure = createAction(
-  '[Template] Get Failure',
+  '[Templates] Get Failure',
   props<{ errorMessage: string }>()
 );
 
+export const getEmptyTemplate = createAction('[Template] Get Empty');
 export const getTemplate = createAction(
-  '[Templates] Get',
+  '[Template] Get',
   props<{ id: number }>()
 );
 export const getTemplateSuccess = createAction(

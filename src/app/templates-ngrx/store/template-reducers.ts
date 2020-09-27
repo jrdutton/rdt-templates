@@ -16,6 +16,10 @@ export const initialState: TemplateState = {
 
 const templateReducer = createReducer(
   initialState,
+  on(Actions.getEmptyTemplate, (state) => ({
+    ...state,
+    template: {} as ITemplateWithIdDto,
+  })),
   on(Actions.getTemplate, (state) => ({
     ...state,
     loading: true,

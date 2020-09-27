@@ -26,5 +26,33 @@
         }
       ]
     }
+  ],
+  "templates-ngrx": [
+    {
+      "id": 1,
+      "templateName": "T N 1 NgRx",
+      "entityTypeName": "Claim",
+      "modelName": "Claim",
+      "modelVersion": 1,
+      "templateChannels": [
+        {
+          "channelName": "Email",
+          "body": "Test1"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "templateName": "T N 2 NgRx",
+      "entityTypeName": "Claim",
+      "modelName": "Claim",
+      "modelVersion": 1,
+      "templateChannels": [
+        {
+          "channelName": "Email",
+          "body": "Test1"
+        }
+      ]
+    }
   ]
 }
